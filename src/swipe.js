@@ -34,8 +34,11 @@ var sloth = 5;
 
 var isDebug = false;
 
+var currentDirection = -1;
 var htmlBody = $("body");
 var previousPosition = htmlBody.css("position");
+
+var unload = false;
 
 // timeOutFuction
 var timeOut = false;
@@ -66,88 +69,102 @@ $(document).scroll(function() {
 var timeOutFunc = function() {
 	debug("timeout called");
 	if (counterLeft > sloth || counterRight > sloth) {
-		counterLeft = 0;
-		counterRight = 0;
-		debug("timeout: resetting...");
-		animateBody(0, 1, true);
-		timeOut = false;
+		reset();
 		return;
 	}
 
 	timeOut = setTimeout(timeOutFunc, resetCounterThreshold);
 };
 
-$(document).on('mousewheel', function(event) {
-	if ((isLeft || isRight) && Math.abs(event.deltaX) > 0) {
-	
-		// back
-		if (event.deltaX < 0 && isLeft) {
-			debug("left "+counterLeft);
-			if (counterLeft > sensivity) {
-				$(document).off('mousewheel');
-				debug("going back");
-				counterLeft = 0;
-				
-				htmlBody.animate({
-					left: 1000,
-					opacity: 0
-				}, 200, function() {
-					clearTimeoutAdvanced();			
+$(document).on('mousewheel', swipe);
+
+function swipe(event) {
+		if ((isLeft || isRight) && Math.abs(event.deltaX) > 0) {
+
+			// back
+			if (event.deltaX < 0 && isLeft) {
+				debug("left "+counterLeft);
+				if (counterLeft > sensivity) {
+					$(document).off("mousewheel");
+					debug("going back");
+					counterLeft = 0;
+
+					currentDirection = -1;
+
 					history.go(-1);
-				});
-				
-			
+					setTimeout(function() {reattachEvent(-1);}, 500);
+				}
+
+				if (counterLeft >= sloth) {
+					animateBody(animationSteps.back.swipe, animationSteps.back.opacity);
+				}
+
+				counterLeft++;
 			}
-			
-			if (counterLeft >= sloth) {
-				animateBody(animationSteps.back.swipe, animationSteps.back.opacity);
-			}
-			
-			counterLeft++;
-		}
-		
-		if (event.deltaX > 0 && isRight) {
-			debug("right "+counterRight);
-			if (counterRight > sensivity) {
-				$(document).off('mousewheel');
-				debug("going forward");
-				counterRight = 0;
-				
-				htmlBody.animate({
-					left: -1000,
-					opacity: 0
-				}, 200, function() {
-					clearTimeoutAdvanced();
+
+			if (event.deltaX > 0 && isRight) {
+				debug("right "+counterRight);
+				if (counterRight > sensivity) {
+					debug("going forward");
+					$(document).off("mousewheel");
+					counterRight = 0;
+
+					currentDirection = 1;
+
 					history.go(1);
-				});
-			
+					setTimeout(function() {reattachEvent(1);}, 500);
+				}
+
+				if (counterRight == sloth) {
+					swipeRight = $("body").scrollRight()+parseInt(animationSteps.forward.swipe)
+				} else {
+					swipeRight = "-="+Math.abs(parseInt(animationSteps.forward.swipe));
+				}
+
+				if (counterRight >= sloth) {
+					animateBody(swipeRight, animationSteps.forward.opacity);
+				}
+
+				counterRight++;
 			}
-			
-			if (counterRight == sloth) {
-				swipeRight = $("body").scrollRight()+parseInt(animationSteps.forward.swipe)
-			} else {
-				swipeRight = "-="+Math.abs(parseInt(animationSteps.forward.swipe));
+
+
+			if (timeOut == false) {
+				timeOutFunc(true);
 			}
-			
-			if (counterRight >= sloth) {
-				animateBody(swipeRight, animationSteps.forward.opacity);
-			}
-			
-			counterRight++;
+		} else {
+			clearTimeoutAdvanced();
 		}
-	
-		
-		if (timeOut == false) {
-			timeOutFunc(true);
-		}
-	} else {
-		clearTimeoutAdvanced();
-	}
-});
+}
 
 $(document).ready(function() {
 	$(document).scroll();	
 });
+
+$(window).on("beforeunload", function() {
+	unload = true;
+
+	htmlBody.animate({
+		left: currentDirection*(-1000),
+		opacity: 0
+	}, 200);
+});
+
+function reattachEvent(direction) {
+	// reattach if not refreshing page
+	if (!unload) {
+		$(document).on("mousewheel", swipe);
+		reset();
+	}
+}
+
+function reset() {
+	counterLeft = 0;
+	counterRight = 0;
+	debug("timeout: resetting...");
+	animateBody(0, 1, true);
+	timeOut = false;
+}
 
 function animateBody(howMuchLeftRight, howMuchOpacity, force) {
 	if ((enableAnimation && !$(htmlBody).is(':animated')) || force) {
