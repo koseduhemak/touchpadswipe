@@ -1,0 +1,10 @@
+{
+   "content_scripts": [ {
+      "js": [ "jquery.min.js", "mousewheel.js", "swipe.js" ],
+	     "matches": ["*://*/*"]
+   } ],
+   "description": "Enables multitouch swipe (backwards/forwards) in chrome as in OSX for windows notebooks with touchpads.",
+   "name": "TouchpadSwipe",
+   "version": "1.0",
+   "manifest_version": 2
+}
