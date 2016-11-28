@@ -1,0 +1,20 @@
+body.touchpadSwipeAnimateTransitionBrowserPagingOutgoingBack {
+  transform: translate(1000px, 0) !important;
+  opacity: 0;
+  transition: 1s ease-out; }
+
+body.touchpadSwipeAnimateTransitionBrowserPagingOutgoingForward {
+  transform: translate(-1000px, 0) !important;
+  opacity: 0;
+  transition: 1s ease-out; }
+
+body.touchpadSwipeAnimationCore {
+  transition: all 100ms ease-out; }
+
+.touchpadSwipeAnimateLeft50px {
+  transform: translate(100px, 0);
+  opacity: 0.5; }
+
+.touchpadSwipeAnimateRight50px {
+  transform: translate(-100px, 0);
+  opacity: 0.5; }
