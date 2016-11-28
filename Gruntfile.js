@@ -38,6 +38,16 @@ module.exports = function(grunt) {
                 }]
             }
         },
+        compress: {
+            main: {
+                options: {
+                    archive: '<%= pkg.name %>.<%= pkg.version %>.zip'
+                },
+                files: [
+                    {expand: true, cwd: "dist/", src: ['*'], dest: '/'}
+                ]
+            }
+        },
 
         watch: { // Compile everything into one task with Watch Plugin
             css: {
@@ -85,6 +95,6 @@ module.exports = function(grunt) {
 
     });
 
-    grunt.registerTask('dist', ['sass', 'cssmin', 'uglify', 'updatejson']);
+    grunt.registerTask('dist', ['sass', 'cssmin', 'uglify', 'updatejson', 'compress']);
 
 };
