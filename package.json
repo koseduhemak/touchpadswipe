@@ -1,10 +1,7 @@
 {
-  "name": "touchpadswipe",
+  "name": "TouchpadSwipe",
   "version": "1.2.0",
   "description": "Enables multitouch swipe (backwards/forwards) in chrome as in OSX. If your notebooks touchpad is configured to do horizontal scroll with two fingers f.e. you can use that gesture to go back and forward in chrome browser.",
-  "dependencies": {
-    "grunt": "^1.0.1"
-  },
   "devDependencies": {
     "grunt": "^1.0.1",
     "grunt-contrib-copy": "^1.0.0",
@@ -14,8 +11,6 @@
     "grunt-contrib-uglify": "~0.5.0",
     "grunt-contrib-watch": "^1.0.0",
     "grunt-sass": "^1.2.1",
-    "grunt-string-replace": "^1.3.1",
-    "grunt-update-json": "^0.2.2",
     "load-grunt-tasks": "^3.5.2"
   },
   "scripts": {

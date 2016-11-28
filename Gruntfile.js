@@ -76,7 +76,8 @@ module.exports = function(grunt) {
         }
         var manifest = grunt.file.readJSON(projectFile);//get file as json object
         manifest.version = pkg.version;
-        console.log(manifest["content_scripts"][0]["js"]);
+        manifest.description = pkg.description;
+        manifest.name = pkg.name;
         manifest["content_scripts"][0]["css"] = ["anim.min.css"];
         manifest["content_scripts"][0]["js"] = ["touchpadswipe.min.js"];
 
