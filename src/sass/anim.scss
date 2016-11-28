@@ -1,0 +1,31 @@
+$switchPageAnimationTranslate: 1000px;
+$switchPageAnimationDuration: 1s;
+
+$swipeAnimationWidth: 100px;
+$swipeAnimationDuration: 100ms;
+
+body.touchpadSwipeAnimateTransitionBrowserPagingOutgoingBack {
+  transform: translate($switchPageAnimationTranslate, 0) !important;
+  opacity: 0;
+  transition: $switchPageAnimationDuration ease-out;
+}
+
+body.touchpadSwipeAnimateTransitionBrowserPagingOutgoingForward {
+  transform: translate(-$switchPageAnimationTranslate, 0) !important;
+  opacity: 0;
+  transition: $switchPageAnimationDuration ease-out;
+}
+
+body.touchpadSwipeAnimationCore {
+  transition: all $swipeAnimationDuration ease-out;
+}
+
+.touchpadSwipeAnimateLeft50px {
+  transform: translate($swipeAnimationWidth, 0);
+  opacity: 0.5;
+}
+
+.touchpadSwipeAnimateRight50px {
+  transform: translate(-$swipeAnimationWidth, 0);
+  opacity: 0.5;
+}

@@ -26,3 +26,6 @@ crashlytics.properties
 crashlytics-build.properties
 fabric.properties
 
+*.zip
+node_modules
+dist

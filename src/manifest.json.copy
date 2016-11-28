@@ -1,6 +1,6 @@
 {
    "content_scripts": [ {
-      "css" : ["css/anim.css"],
+      "css" : ["anim.css"],
       "js": [ "jquery.min.js", "mousewheel.js", "swipe.js" ],
       "matches": ["*://*/*"]
    } ],

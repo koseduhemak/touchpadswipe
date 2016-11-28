@@ -13,31 +13,19 @@ var counterRight = 0;
 var isLeft = false;
 var isRight = false;
 // how long user have to scroll left/right before history back / forward
-var sensivity = 10;
+var sensivity = 25;
 // when to clear counters (in ms)
-var resetCounterThreshold = 2000;
+var resetCounterThreshold = 800;
 // animations disabled?
 var enableAnimation = true;
-var animationSteps = {
-	back: {
-		swipe: "+=100",
-		opacity: "-=0.3"
-	},
-	forward: {
-		swipe: "-100",
-		opacity: "-=0.3"
-	}
-};
 
 // sloth to dont shake browsers content if user accidently scrolls horizontal
 var sloth = 5;
 
 var isDebug = false;
 
-var currentDirection = -1;
+var currentDirection = false;
 var htmlBody = $("body");
-var previousPosition = htmlBody.css("position");
-
 var unload = false;
 
 // timeOutFuction
@@ -96,7 +84,7 @@ function swipe(event) {
 				}
 
 				if (counterLeft >= sloth) {
-					animateBody(animationSteps.back.swipe, animationSteps.back.opacity);
+					animateBody(-1);
 				}
 
 				counterLeft++;
@@ -115,19 +103,12 @@ function swipe(event) {
 					setTimeout(function() {reattachEvent(1);}, 500);
 				}
 
-				if (counterRight == sloth) {
-					swipeRight = $("body").scrollRight()+parseInt(animationSteps.forward.swipe)
-				} else {
-					swipeRight = "-="+Math.abs(parseInt(animationSteps.forward.swipe));
-				}
-
 				if (counterRight >= sloth) {
-					animateBody(swipeRight, animationSteps.forward.opacity);
+                    animateBody(1);
 				}
 
-				counterRight++;
+				counterRight++
 			}
-
 
 			if (timeOut == false) {
 				timeOutFunc(true);
@@ -138,17 +119,23 @@ function swipe(event) {
 }
 
 $(document).ready(function() {
-	$(document).scroll();	
+	$(document).scroll();
+	htmlBody.addClass("touchpadSwipeAnimationCore");
 });
 
-$(window).on("beforeunload", function() {
-	unload = true;
 
-	htmlBody.animate({
-		left: currentDirection*(-1000),
-		opacity: 0
-	}, 200);
-});
+$(window).on("beforeunload", animateBrowserPaging);
+
+function animateBrowserPaging() {
+	if (currentDirection != false) {
+        if (currentDirection > 0) {
+            var animClass = "touchpadSwipeAnimateTransitionBrowserPagingOutgoingForward";
+        } else {
+            var animClass = "touchpadSwipeAnimateTransitionBrowserPagingOutgoingBack";
+        }
+        htmlBody.addClass(animClass);
+    }
+}
 
 function reattachEvent(direction) {
 	// reattach if not refreshing page
@@ -162,26 +149,38 @@ function reset() {
 	counterLeft = 0;
 	counterRight = 0;
 	debug("timeout: resetting...");
-	animateBody(0, 1, true);
+	animateBody(0, true);
 	timeOut = false;
 }
 
-function animateBody(howMuchLeftRight, howMuchOpacity, force) {
+function animateBody(leftOrRight, force) {
 	if ((enableAnimation && !$(htmlBody).is(':animated')) || force) {
-		htmlBody.css("position", "absolute");
-		
-		if (force) {
-			htmlBody.clearQueue();
-		}
-		
-		htmlBody.animate({
-			left: howMuchLeftRight,
-			opacity: howMuchOpacity
-		}, 200, function() {
-			if (howMuchOpacity == 1) {
-				htmlBody.css("position", previousPosition);
+
+		if (leftOrRight > 0) {
+			// forwards
+			if (htmlBody.hasClass("touchpadSwipeAnimateLeft50px")) {
+                htmlBody.removeClass("touchpadSwipeAnimateLeft50px");
 			}
-		});
+			if (!htmlBody.hasClass("touchpadSwipeAnimateRight50px")) {
+				htmlBody.addClass("touchpadSwipeAnimateRight50px");
+            }
+		} else if (leftOrRight < 0) {
+            // backwards
+            if (htmlBody.hasClass("touchpadSwipeAnimateRight50px")) {
+                htmlBody.removeClass("touchpadSwipeAnimateRight50px");
+            }
+            if (!htmlBody.hasClass("touchpadSwipeAnimateLeft50px")) {
+                htmlBody.addClass("touchpadSwipeAnimateLeft50px");
+            }
+		} else {
+			// reset
+            if (htmlBody.hasClass("touchpadSwipeAnimateLeft50px")) {
+                htmlBody.removeClass("touchpadSwipeAnimateLeft50px");
+            }
+            if (htmlBody.hasClass("touchpadSwipeAnimateRight50px")) {
+                htmlBody.removeClass("touchpadSwipeAnimateRight50px");
+            }
+		}
 	}
 }
 
