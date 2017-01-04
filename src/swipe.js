@@ -31,6 +31,28 @@ var unload = false;
 // timeOutFuction
 var timeOut = false;
 
+
+var options;
+
+// apply options
+function applyOptions() {
+    chrome.storage.sync.get({
+        animationsEnabled: true
+    }, function(items) {
+        enableAnimation = items.animationsEnabled;
+
+        if (enableAnimation) {
+            $(window).on("beforeunload", animateBrowserPaging);
+        }
+    });
+}
+
+// listen for changes in options
+chrome.storage.onChanged.addListener(function(changes, namespace) {
+    applyOptions();
+});
+
+
 $(document).scroll(function() {
 	var left = $("body").scrollLeft();
 	var right = $("body").scrollRight();
@@ -119,12 +141,10 @@ function swipe(event) {
 }
 
 $(document).ready(function() {
+    applyOptions();
 	$(document).scroll();
 	htmlBody.addClass("touchpadSwipeAnimationCore");
 });
-
-
-$(window).on("beforeunload", animateBrowserPaging);
 
 function animateBrowserPaging() {
 	if (currentDirection != false) {
