@@ -9,16 +9,23 @@
         div {
             padding: 5px;
         }
+        .success {
+            color: #4BB543;
+        }
     </style>
 </head>
 <body>
 
-<div>
-<label>
-    <input type="checkbox" id="animations">
-    Enable/Disable animations
-</label>
-</div>
+<table border="0" cellpadding="4" cellspacing="4">
+    <tr>
+        <td><label for="animations">Enable/Disable animations:</label></td>
+        <td><input type="checkbox" name="animations" id="animations"></td>
+    </tr>
+    <tr>
+        <td><label for="sensitivity">Current sensitivity:</label></td>
+        <td><input type="number" name="sensitivity" id="sensitivity"></td>
+    </tr>
+</table>
 
 <div id="status"></div>
 <button id="save">Save</button>

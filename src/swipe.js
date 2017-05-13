@@ -40,6 +40,7 @@ function applyOptions() {
         animationsEnabled: true
     }, function(items) {
         enableAnimation = items.animationsEnabled;
+        sensivity = items.sensitivity;
 
         if (enableAnimation) {
             $(window).on("beforeunload", animateBrowserPaging);
@@ -54,8 +55,9 @@ chrome.storage.onChanged.addListener(function(changes, namespace) {
 
 
 $(document).scroll(function() {
-	var left = $("body").scrollLeft();
-	var right = $("body").scrollRight();
+	var body = $("body");
+	var left = body.scrollLeft();
+	var right = body.scrollRight();
 	
 	debug("scrollLeft: "+left);
 	debug("scrollRight: "+right);

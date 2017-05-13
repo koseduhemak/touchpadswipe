@@ -28,7 +28,7 @@ module.exports = function (grunt) {
                     },
                     {
                         src: ['src/options/*.js'],
-                        dest: 'dist/options/options.min.js'
+                        dest: 'dist/options/options.js'
                     }
                 ]
             }
