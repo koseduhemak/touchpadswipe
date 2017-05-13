@@ -1,6 +1,6 @@
 {
   "name": "TouchpadSwipe",
-  "version": "1.2.2",
+  "version": "1.2.5",
   "description": "Enables multitouch swipe (backwards/forwards) in chrome as in OSX on Microsoft Precision track-/touchpads.",
   "devDependencies": {
     "grunt": "^1.0.1",
