@@ -13,7 +13,7 @@ var counterRight = 0;
 var isLeft = false;
 var isRight = false;
 // how long user have to scroll left/right before history back / forward
-var sensivity = 25;
+var sensitivity = 25;
 // when to clear counters (in ms)
 var resetCounterThreshold = 800;
 // animations disabled?
@@ -37,10 +37,14 @@ var options;
 // apply options
 function applyOptions() {
     chrome.storage.sync.get({
-        animationsEnabled: true
+        animationsEnabled: true,
+		sensitivity: 25
     }, function(items) {
+    	debug("options: ");
+    	debug(items);
+
         enableAnimation = items.animationsEnabled;
-        sensivity = items.sensitivity;
+        sensitivity = items.sensitivity;
 
         if (enableAnimation) {
             $(window).on("beforeunload", animateBrowserPaging);
@@ -96,7 +100,8 @@ function swipe(event) {
 			// back
 			if (event.deltaX < 0 && isLeft) {
 				debug("left "+counterLeft);
-				if (counterLeft > sensivity) {
+				debug("sensitivity: "+sensitivity)
+				if (counterLeft > sensitivity) {
 					$(document).off("mousewheel");
 					debug("going back");
 					counterLeft = 0;
@@ -116,7 +121,7 @@ function swipe(event) {
 
 			if (event.deltaX > 0 && isRight) {
 				debug("right "+counterRight);
-				if (counterRight > sensivity) {
+				if (counterRight > sensitivity) {
 					debug("going forward");
 					$(document).off("mousewheel");
 					counterRight = 0;
