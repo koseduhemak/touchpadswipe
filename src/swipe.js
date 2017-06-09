@@ -10,6 +10,8 @@ $.fn.extend({
 
 var counterLeft = 0;
 var counterRight = 0;
+var forwardsDirection = 1;
+var backDirection = -1;
 var isLeft = false;
 var isRight = false;
 // how long user have to scroll left/right before history back / forward
@@ -38,16 +40,22 @@ var options;
 function applyOptions() {
     chrome.storage.sync.get({
         animationsEnabled: true,
+        reverseEnabled: false,
 		sensitivity: 25
     }, function(items) {
     	debug("options: ");
     	debug(items);
 
         enableAnimation = items.animationsEnabled;
+        enableReverse = items.reverseEnabled;
         sensitivity = items.sensitivity;
 
         if (enableAnimation) {
             $(window).on("beforeunload", animateBrowserPaging);
+        }
+        if (enableReverse) {
+			forwardsDirection = -1;
+			backDirection = 1;
         }
     });
 }
@@ -106,10 +114,10 @@ function swipe(event) {
 					debug("going back");
 					counterLeft = 0;
 
-					currentDirection = -1;
+					currentDirection = backDirection;
 
-					history.go(-1);
-					setTimeout(function() {reattachEvent(-1);}, 500);
+					history.go(backDirection);
+					setTimeout(function() {reattachEvent(backDirection);}, 500);
 				}
 
 				if (counterLeft >= sloth) {
@@ -126,10 +134,10 @@ function swipe(event) {
 					$(document).off("mousewheel");
 					counterRight = 0;
 
-					currentDirection = 1;
+					currentDirection = forwardsDirection;
 
-					history.go(1);
-					setTimeout(function() {reattachEvent(1);}, 500);
+					history.go(forwardsDirection);
+					setTimeout(function() {reattachEvent(forwardsDirection);}, 500);
 				}
 
 				if (counterRight >= sloth) {

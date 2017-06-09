@@ -1,9 +1,11 @@
 // Saves options to chrome.storage.sync.
 function save_options() {
     var animationsEnabled = document.getElementById('animations').checked;
+    var reverseEnabled = document.getElementById('reverse').checked;
     var sensitivity = document.getElementById('sensitivity').value;
     chrome.storage.sync.set({
         animationsEnabled: animationsEnabled,
+        reverseEnabled: reverseEnabled,
         sensitivity: isNormalInteger(sensitivity) ? sensitivity : 25
     }, function () {
         // Update status to let user know options were saved.
@@ -18,9 +20,11 @@ function save_options() {
 function restore_options() {
     chrome.storage.sync.get({
         animationsEnabled: true,
+        reverseEnabled: false,
         sensitivity: 25
     }, function (items) {
         document.getElementById('animations').checked = items.animationsEnabled;
+        document.getElementById('reverse').checked = items.reverseEnabled;
         document.getElementById('sensitivity').value = items.sensitivity;
     });
 }
