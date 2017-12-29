@@ -29,3 +29,5 @@ fabric.properties
 *.zip
 node_modules
 dist
+
+.DS_Store
