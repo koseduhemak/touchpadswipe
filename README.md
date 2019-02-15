@@ -1,3 +1,5 @@
+This extension is no longer available in the Chrome Extension Store... This is due the fact the Google wants videos / screenshots and stuff which I do not have time for. Therefore you have to use Firefox or create the chrome extension by yourself using the source of this repository (google how to load local extensions in chrome).
+
 # TouchpadSwipe
 Enables multitouch swipe (backwards/forwards) in chrome as in OSX. If your notebooks touchpad is configured to do horizontal scroll with two fingers f.e. you can use that gesture to go back and forward in chrome browser.
 
